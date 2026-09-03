@@ -1,0 +1,16 @@
+{
+  "name": "21-blackjack-apk",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Android wrapper and server for the 21 Blackjack multiplayer game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "android:build": "cd android && ./gradlew assembleDebug"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}
