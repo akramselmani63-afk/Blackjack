@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>21 — The Bayou Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button id="lang-en" onclick="setLang('en')">EN</button>
+  <button id="lang-ar" onclick="setLang('ar')">ع</button>
+</div>
+
+<div class="container">
+  <h1><span class="num">21</span></h1>
+  <div class="subtitle" data-i18n="subtitle"></div>
+
+  <!-- LOBBY -->
+  <div id="lobby" class="lobby">
+    <input id="nameInput" data-i18n-placeholder="name" maxlength="16">
+
+    <div class="server-config">
+      <input id="serverUrlInput" type="url" placeholder="Game server URL (https://...)" autocomplete="url">
+      <button class="btn secondary" onclick="connectServer()" id="connectServerBtn">Connect</button>
+      <div id="connectionStatus" class="connection-status"></div>
+    </div>
+
+    <button class="btn" onclick="quickMatch()" data-i18n="quickMatch"></button>
+
+    <div class="divider">OR</div>
+
+    <button class="btn secondary" onclick="createRoom()" data-i18n="createRoom"></button>
+
+    <div style="display:flex; gap:8px; margin-top:4px;">
+      <input id="roomCodeInput" data-i18n-placeholder="roomCode" style="margin-bottom:0; text-transform:uppercase;">
+      <button class="btn secondary" onclick="joinRoom()" style="width:auto; padding:10px 18px;" data-i18n="joinRoom"></button>
+    </div>
+
+    <div id="queueStatus" class="hidden" style="text-align:center; margin-top:14px; color:var(--amber);">
+      <div data-i18n="inQueue"></div>
+      <button class="btn secondary" onclick="cancelQueue()" style="margin-top:10px;" data-i18n="cancel"></button>
+    </div>
+
+    <div id="roomCreatedBox" class="hidden">
+      <div style="margin-top:14px;" data-i18n="shareCode"></div>
+      <div class="code-display" id="roomCodeDisplay"></div>
+      <button class="btn secondary" onclick="copyCode()" id="copyBtn" data-i18n="copy"></button>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="hidden">
+    <div class="table">
+      <div class="main-panel">
+        <div class="phase-bar">
+          <div><span data-i18n="phase"></span> <span class="phase" id="phaseNum">I</span></div>
+          <div><span data-i18n="extraStake"></span>: <span class="stakes" id="extraStake">0</span></div>
+        </div>
+
+        <!-- Opponent -->
+        <div class="player-area" id="oppArea">
+          <div class="player-header">
+            <div>
+              <span class="player-name" id="oppName">Opponent</span>
+              <span class="status-tag hidden" id="oppStoodTag" data-i18n="oppStood"></span>
+              <span class="status-tag frozen hidden" id="oppFrozenTag" data-i18n="oppFrozen"></span>
+            </div>
+            <div class="player-stats">
+              <span><span data-i18n="strikes"></span>: <span class="strikes-display" id="oppStrikes">0</span>/3</span>
+            </div>
+          </div>
+          <div class="opp-hand-hidden" id="oppHand"></div>
+        </div>
+
+        <!-- You -->
+        <div class="player-area" id="myArea">
+          <div class="player-header">
+            <div>
+              <span class="player-name" id="myName">You</span>
+              <span class="status-tag hidden" id="myStoodTag" data-i18n="youStood"></span>
+              <span class="status-tag frozen hidden" id="myFrozenTag" data-i18n="youFrozen"></span>
+            </div>
+            <div class="player-stats">
+              <span><span data-i18n="strikes"></span>: <span class="strikes-display" id="myStrikes">0</span>/3</span>
+              <span class="value-display" id="myValue">0</span>
+            </div>
+          </div>
+          <div class="hand" id="myHand"></div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls" id="controls">
+          <button class="btn" id="hitBtn" onclick="doHit()" data-i18n="hit"></button>
+          <button class="btn secondary" id="standBtn" onclick="doStand()" data-i18n="stand"></button>
+          <button class="btn trump-btn" id="trumpToggle" onclick="toggleTrumps()" data-i18n="playTrump"></button>
+        </div>
+
+        <div id="trumpPanel" class="hidden" style="margin-top:14px;">
+          <h3 style="color:var(--amber); margin-bottom:8px;" data-i18n="trumpHand"></h3>
+          <div class="trump-hand" id="trumpHand"></div>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <h3 data-i18n="roundLog"></h3>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal-overlay hidden">
+  <div class="modal">
+    <h2 id="modalTitle"></h2>
+    <p id="modalText"></p>
+    <button class="btn" onclick="location.reload()" data-i18n="backToLobby"></button>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="socket.io.min.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
